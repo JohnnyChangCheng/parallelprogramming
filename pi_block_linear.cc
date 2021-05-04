@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
 
   srand(time(0) + world_rank);
 
-  for (long long int i = 0; i < tosses; ++i) {
+  for (long long int i = 0; i < tosses/world_size; ++i) {
     double x = ((double)rand()) / RAND_MAX;
     double y = ((double)rand()) / RAND_MAX;
     double z = sqrt(x * x + y * y);
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
       finalcounter += receiver_counter[i];
     }
 
-    pi_result = ((double)finalcounter / (double)(tosses*world_size)) * 4.0;
+    pi_result = ((double)finalcounter / (double)(tosses)) * 4.0;
 
     // --- DON'T TOUCH ---
     double end_time = MPI_Wtime();
