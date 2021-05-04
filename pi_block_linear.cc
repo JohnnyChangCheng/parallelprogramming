@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
     finalcounter += counter;
     for (int i = 1; i < world_size; ++i) {
       MPI_Recv(&receiver_counter[i], 1, MPI_LONG_LONG_INT,
-               MPI_ANY_SOURCE, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+               1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
       finalcounter += receiver_counter[i];
     }
