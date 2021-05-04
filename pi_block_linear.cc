@@ -23,7 +23,8 @@ int main(int argc, char **argv) {
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
   srand(world_rank);
-
+  
+  #pragma omp parallel for
   for (long long int i = 0; i < tosses/world_size; ++i) {
     double x = ((double)rand()) / RAND_MAX;
     double y = ((double)rand()) / RAND_MAX;
