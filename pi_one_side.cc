@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
   MPI_Win window;
   MPI_Win_create(window_buffer, sizeof(long long int) * world_size, sizeof(long long int), MPI_INFO_NULL, MPI_COMM_WORLD, &window);
   
-  for (long long int i = 0; i < tosses; ++i) {
+  for (long long int i = 0; i < tosses/world_size; ++i) {
 
     x = (double)random() / RAND_MAX;
     y = (double)random() / RAND_MAX;
@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < world_size; ++i) {
       counter_sum += window_buffer[i];
     }
-    pi_result = ((double)counter_sum / (double)(tosses * world_size)) * 4.0;
+    pi_result = ((double)counter_sum / (double)(tosses)) * 4.0;
     // --- DON'T TOUCH ---
     double end_time = MPI_Wtime();
     printf("%lf\n", pi_result);
