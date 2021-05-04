@@ -49,7 +49,7 @@ int main(int argc, char **argv)
                     long long int buffer = 0;
                     MPI_Recv(&buffer, 1, MPI_LONG_LONG_INT,
                              j, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-                    printf("Get buffer value %lld and from %d the id %d\n",buffer,j,last_idx);
+                    
                     counter += buffer;
                 }
                 if (j == world_rank)
