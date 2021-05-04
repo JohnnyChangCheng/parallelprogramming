@@ -16,18 +16,19 @@ int main(int argc, char **argv) {
   double x, y, z;
   long long int count = 0;
 
+
   // ---
 
   // TODO: MPI init
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
-  srand(world_rank);
+  unsigned int seed = time(NULL)+world_rank;
   long long int recv_cnt[world_size];
   // TODO: use MPI_Reduce
   for (long long int i = 0; i < tosses/world_size; ++i) {
 
-    x = (double)random() / RAND_MAX;
-    y = (double)random() / RAND_MAX;
+    x = (double)rand_r(&seed) / RAND_MAX;
+    y = (double)rand_r(&seed) / RAND_MAX;
     z = (x * x) + (y * y);
 
     if (z <= 1) {

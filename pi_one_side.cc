@@ -21,15 +21,15 @@ int main(int argc, char **argv) {
   // TODO: MPI init
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
-  srand(world_rank);
+  unsigned int seed = time(NULL)+world_rank;
   long long int window_buffer[world_size] = {0};
   MPI_Win window;
   MPI_Win_create(window_buffer, sizeof(long long int) * world_size, sizeof(long long int), MPI_INFO_NULL, MPI_COMM_WORLD, &window);
   
   for (long long int i = 0; i < tosses/world_size; ++i) {
 
-    x = (double)random() / RAND_MAX;
-    y = (double)random() / RAND_MAX;
+    x = (double)rand_r(&seed) / RAND_MAX;
+    y = (double)rand_r(&seed) / RAND_MAX;
     z = (x * x) + (y * y);
 
     if (z <= 1) {

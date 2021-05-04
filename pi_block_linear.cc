@@ -15,24 +15,25 @@ int main(int argc, char **argv) {
   int world_rank, world_size;
   int iter = 0;
   long counter = 0;
+  
 
   // ---
 
   // TODO: init MPI
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+  unsigned int seed = time(NULL)+world_rank;
 
-  srand(world_rank);
   
-  #pragma omp parallel for
   for (long long int i = 0; i < tosses/world_size; ++i) {
-    double x = ((double)rand()) / RAND_MAX;
-    double y = ((double)rand()) / RAND_MAX;
+    double x = ((double)rand_r(&seed)) / RAND_MAX;
+    double y = ((double)rand_r(&seed)) / RAND_MAX;
     double z = x * x + y * y;
     if (z <= 1) {
       counter++;
     }
   }
+
   if (world_rank > 0) {
 
     MPI_Send(&counter, 1, MPI_LONG_LONG_INT, 0, 1, MPI_COMM_WORLD);
