@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
   srand(time(NULL) + world_rank);
   // TODO: use MPI_Reduce
-  for (long long int i = 0; i < tosses; ++i) {
+  for (long long int i = 0; i < tosses/world_size; ++i) {
 
     x = (double)random() / RAND_MAX;
     y = (double)random() / RAND_MAX;
@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
 
   if (world_rank == 0) {
     // TODO: PI result
-    pi_result = ((double)reducedcount / (double)(tosses*world_size)) * 4.0;
+    pi_result = ((double)reducedcount / (double)(tosses)) * 4.0;
     // --- DON'T TOUCH ---
     double end_time = MPI_Wtime();
     printf("%lf\n", pi_result);
