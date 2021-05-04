@@ -19,7 +19,7 @@ int main(int argc, char **argv)
     // TODO: init MPI
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
-
+    srand(time(0) + world_rank);
     for (long long int i = 0; i < tosses; ++i)
     {
         double x = ((double)rand()) / RAND_MAX;
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     if (world_rank == 0)
     {
         // TODO: PI result
-        pi_result = (double)counter / (double)(tosses*world_size);
+        pi_result = (double)counter / (double)(tosses*world_size) * 4.0;
         // --- DON'T TOUCH ---
         double end_time = MPI_Wtime();
         printf("%lf\n", pi_result);
