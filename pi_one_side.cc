@@ -23,10 +23,11 @@ int main(int argc, char **argv) {
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
   unsigned int seed = time(NULL)+world_rank;
   long long int window_buffer[world_size] = {0};
+  long long int times = tosses/world_size;
   MPI_Win window;
   MPI_Win_create(window_buffer, sizeof(long long int) * world_size, sizeof(long long int), MPI_INFO_NULL, MPI_COMM_WORLD, &window);
   
-  for (long long int i = 0; i < tosses/world_size; ++i) {
+  for (long long int i = 0; i < times; ++i) {
 
     x = (double)rand_r(&seed) / RAND_MAX;
     y = (double)rand_r(&seed) / RAND_MAX;

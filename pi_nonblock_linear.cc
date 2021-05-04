@@ -24,9 +24,9 @@ int main(int argc, char **argv) {
   MPI_Request req[world_size];
   MPI_Status sta[world_size];
   unsigned int seed = time(NULL)+world_rank;
-  srand(world_rank);
+  long long int times = tosses/world_size;
 
-  for (long long int i = 0; i < tosses/world_size; ++i) {
+  for (long long int i = 0; i < times; ++i) {
     double x = ((double)rand_r(&seed)) / RAND_MAX;
     double y = ((double)rand_r(&seed)) / RAND_MAX;
     double z = (x * x + y * y);

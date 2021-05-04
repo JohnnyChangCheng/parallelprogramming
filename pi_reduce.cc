@@ -22,8 +22,9 @@ int main(int argc, char **argv) {
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
   unsigned int seed = time(NULL)+world_rank;
+  long long int times = tosses/world_size;
   // TODO: use MPI_Reduce
-  for (long long int i = 0; i < tosses/world_size; ++i) {
+  for (long long int i = 0; i < times; ++i) {
 
     x = (double)rand_r(&seed) / RAND_MAX;
     y = (double)rand_r(&seed) / RAND_MAX;

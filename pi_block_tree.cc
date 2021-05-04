@@ -20,7 +20,8 @@ int main(int argc, char **argv)
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
     unsigned int seed = time(NULL)+world_rank;
-    for (long long int i = 0; i < tosses/world_size; ++i)
+    long long int times = tosses/world_size;
+    for (long long int i = 0; i < times; ++i)
     {
         double x = ((double)rand_r(&seed)) / RAND_MAX;
         double y = ((double)rand_r(&seed)) / RAND_MAX;

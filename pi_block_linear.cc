@@ -24,8 +24,8 @@ int main(int argc, char **argv) {
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
   unsigned int seed = time(NULL)+world_rank;
 
-  
-  for (long long int i = 0; i < tosses/world_size; ++i) {
+  long long int times = tosses/world_size;
+  for (long long int i = 0; i < times; ++i) {
     double x = ((double)rand_r(&seed)) / RAND_MAX;
     double y = ((double)rand_r(&seed)) / RAND_MAX;
     double z = x * x + y * y;
@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
       finalcounter += receiver_counter[i];
     }
 
-    pi_result = ((double)(finalcounter*4) / (double)(tosses));
+    pi_result = ((finalcounter*4) / (double)(tosses));
 
     // --- DON'T TOUCH ---
     double end_time = MPI_Wtime();
