@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
 
   srand(time(0) + world_rank);
 
-  for (long long int i = 0; i < tosses; ++i) {
+  for (long long int i = 0; i < tosses/world_size; ++i) {
     double x = ((double)rand()) / RAND_MAX;
     double y = ((double)rand()) / RAND_MAX;
     double z = sqrt(x * x + y * y);
@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
     // only for 0 processor
     receiver_counter[0] = counter;
     for (int i = 1; i < world_size; ++i) {
-      MPI_Irecv(&receiver_counter[i], world_size, MPI_LONG_LONG_INT,
+      MPI_Irecv(&receiver_counter[i], 1, MPI_LONG_LONG_INT,
                MPI_ANY_SOURCE, 1, MPI_COMM_WORLD, &req[i-1]);
 
     }
@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < world_size; ++i) {
       finalcounter += receiver_counter[i];
     }
-    pi_result = ((double)finalcounter / (double)(tosses * world_size)) * 4.0;
+    pi_result = ((double)finalcounter / (double)(tosses)) * 4.0;
 
     // --- DON'T TOUCH ---
     double end_time = MPI_Wtime();
