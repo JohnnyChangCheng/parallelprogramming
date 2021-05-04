@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
   // TODO: MPI init
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
-  srand(time(NULL) + world_rank);
+  srand(world_rank);
   long long int window_buffer[world_size] = {0};
   MPI_Win window;
   MPI_Win_create(window_buffer, sizeof(long long int) * world_size, sizeof(long long int), MPI_INFO_NULL, MPI_COMM_WORLD, &window);
@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
 
     x = (double)random() / RAND_MAX;
     y = (double)random() / RAND_MAX;
-    z = sqrt((x * x) + (y * y));
+    z = (x * x) + (y * y);
 
     if (z <= 1) {
       ++count;
@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < world_size; ++i) {
       counter_sum += window_buffer[i];
     }
-    pi_result = ((double)counter_sum / (double)(tosses)) * 4.0;
+    pi_result = ((double)(counter_sum*4) / (double)(tosses));
     // --- DON'T TOUCH ---
     double end_time = MPI_Wtime();
     printf("%lf\n", pi_result);

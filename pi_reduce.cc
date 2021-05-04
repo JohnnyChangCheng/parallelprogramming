@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 
     x = (double)random() / RAND_MAX;
     y = (double)random() / RAND_MAX;
-    z = sqrt((x * x) + (y * y));
+    z = (x * x) + (y * y);
 
     if (z <= 1) {
       ++count;
@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
 
   if (world_rank == 0) {
     // TODO: PI result
-    pi_result = ((double)reducedcount / (double)(tosses)) * 4.0;
+    pi_result = ((double)(reducedcount*4) / (double)(tosses));
     // --- DON'T TOUCH ---
     double end_time = MPI_Wtime();
     printf("%lf\n", pi_result);

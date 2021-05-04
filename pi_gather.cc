@@ -21,14 +21,14 @@ int main(int argc, char **argv) {
   // TODO: MPI init
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
-  srand(time(NULL) + world_rank);
+  srand(world_rank);
   long long int recv_cnt[world_size];
   // TODO: use MPI_Reduce
   for (long long int i = 0; i < tosses/world_size; ++i) {
 
     x = (double)random() / RAND_MAX;
     y = (double)random() / RAND_MAX;
-    z = sqrt((x * x) + (y * y));
+    z = (x * x) + (y * y);
 
     if (z <= 1) {
       ++count;
@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < world_size; ++i) {
       counter_sum += recv_cnt[i];
     }
-    pi_result = ((double)counter_sum / (double)(tosses)) * 4.0;
+    pi_result = ((double)(counter_sum*4) / (double)(tosses));
     // --- DON'T TOUCH ---
     double end_time = MPI_Wtime();
     printf("%lf\n", pi_result);
